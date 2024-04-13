@@ -1,0 +1,335 @@
+﻿<Window x:Class="ClientTask.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModel="clr-namespace:ClientTask.ViewModels"
+        
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:local="clr-namespace:ClientTask" mc:Ignorable="d"
+        Title="Client App" Height="460" Width="750" ResizeMode="NoResize">
+    <Window.Resources>
+        <!-- Стиль для окна -->
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="#202020"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Стиль для кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#8200CC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#827ACC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="borderButton" Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="borderButton" Property="Background" Value="#62278B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="SlateGray"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="borderButton" Property="Background" Value="#5C2068"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ListBoxStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#FFF"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template" Value="{x:Null}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" 
+                          BorderThickness="1" CornerRadius="3" Background="{TemplateBinding Background}" 
+                          Padding="0" SnapsToDevicePixels="true" Margin="0">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#8200CC"/>
+                            </Trigger>
+
+                            
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="BorderThickness" Value="0"/>
+
+        </Style>
+
+
+        <!-- Стиль для GridView -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="RowBackground" Value="#333333"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#555555"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        
+    </Window.Resources>
+
+
+    <Grid Background="#333333" d:DataContext="{d:DesignInstance viewModel:ClientViewModel, IsDesignTimeCreatable = True}" >
+
+        <StackPanel >
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" Margin="0 5 0 0">
+                <Button Content="Get data" Command="{Binding CommandGetStatistisc}" IsEnabled="{Binding IsConnected}" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Button Content="Get app" Command="{Binding CommandGetApplications}" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Button Content="Reconnect" Command="{Binding CommandConnectToServer}" Width="75" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Button Content="Close Process" Command="{Binding CommandOpenWindow}" Width="85" Margin="350 0 0 0" 
+                        HorizontalAlignment="Center"  VerticalAlignment="Center" >
+                    <Button.Style>
+                        
+                         <Style TargetType="Button">
+                            <Setter Property="Background" Value="#8200CC"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="#827ACC"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="Margin" Value="10,5"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="borderButton" Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="borderButton" Property="Background" Value="#62278B"/>
+                                            </Trigger>
+                                            
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Background" Value="SlateGray"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="borderButton" Property="Background" Value="#5C2068"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ApplicationList}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                
+                <TextBlock Text="ID" Foreground="White"  Margin="18 0 0 0" Background="Transparent" Width="50"/>
+                <TextBlock Text="Name" Foreground="White" Background="Transparent" Width="490"/>
+                <TextBlock Text="Memory (MB)" Foreground="White" Background="Transparent" Width="95"/>
+                <TextBlock Text="CPU" Foreground="White" Background="Transparent" Width="150"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ProcessDataList}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock Text="ID" Foreground="White"  Margin="18 0 0 0" Background="Transparent" Width="50"/>
+                <TextBlock Text="Name" Foreground="White" Background="Transparent" Width="200"/>
+                <TextBlock Text="Memory (KB)" Foreground="White" Background="Transparent" Width="80"/>
+                <TextBlock Text="ProcessTime" Foreground="White" Background="Transparent" Width="150"/>
+            </StackPanel>
+
+            <ListBox x:Name="listDataApp"  ItemsSource="{Binding ApplicationList}" SelectedItem="{Binding SelectedApp}" Background="#202020" ItemContainerStyle="{StaticResource ListBoxStyle}"
+              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+   SelectionMode="Single"  Height="310"  Margin="5 0 5 0 " >
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ApplicationList}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="30">
+                            <TextBlock Text="{Binding Id}" VerticalAlignment="Center" Margin="10 0 0 0" Foreground="White" Background="Transparent" Width="50"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"  Foreground="White" Background="Transparent" Width="490"/>
+                            <TextBlock Text="{Binding MemoryUsed, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" Foreground="White" Background="Transparent" Width="95"/>
+                            <TextBlock Text="{Binding CPUUsed, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" Foreground="White" Background="Transparent" Width="70"/>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <ListBox x:Name="listData"  ItemsSource="{Binding ProcessDataList}" SelectedItem="{Binding SelectedProcess}" 
+                     Background="#202020" ItemContainerStyle="{StaticResource ListBoxStyle}"
+                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            SelectionMode="Single"  Height="310"  Margin="5 0 5 0 " >
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ProcessDataList}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="30">
+                            <TextBlock Text="{Binding Id}" VerticalAlignment="Center" Margin="10 0 0 0" Foreground="White" Background="Transparent" Width="50"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"  Foreground="White" Background="Transparent" Width="200"/>
+                            <TextBlock Text="{Binding MemoryUsed}" VerticalAlignment="Center" Foreground="White" Background="Transparent" Width="95"/>
+                            <TextBlock Text="{Binding ProcessTime, StringFormat='{}{0:hh}:{0:mm}'}" VerticalAlignment="Center" Foreground="White" Background="Transparent" Width="70"/>
+                            <TextBlock Text="{Binding Description}" ToolTip="{Binding }" VerticalAlignment="Center"  Foreground="White" Margin="0" Background="Transparent" Width="200"/>
+                            
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ListBox   ItemsSource="{Binding LogMessages}" Background="#202020" ItemContainerStyle="{StaticResource ListBoxStyle}" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                       SelectionMode="Single"  Height="60" Margin="5 0 5 0 " >
+               
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding }" Margin="10 0 0 0" Foreground="White" Background="Transparent"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </StackPanel>
+
+
+        <Grid Background="#AA151515"  Visibility="{Binding VisibilityWindow}"  >
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="330"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid  Grid.Row="1" Grid.Column="1"  VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Background="#827ACC" Grid.Row="1"></StackPanel>
+
+                <Grid Grid.Row="0" Background="#8200CC">
+                    <StackPanel Height="35"  Margin="5 0 0 0" Orientation="Horizontal" >
+                        <TextBlock  Text="Подтверждение закрытия процесса" FontSize="14" Foreground="#FFF" Margin="0 0 0 0"/>
+                    </StackPanel>
+
+                    <Button Width="35" Content="X" HorizontalAlignment="Right"  ToolTip="Закрыть" FontSize="12"  Margin="3" 
+                            Command="{Binding CommandCloseWindow}"/>
+
+                </Grid>
+
+                <Grid Grid.Row="2" Background="#262626"  >
+
+                    <StackPanel>
+                            <TextBlock  Background="#262626" Foreground="#999999" Padding="15 10 0 5"  Height="30" 
+                                        Text="Вы уверены, что хотите закрыть процесс: "/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Background="#262626" Foreground="#827ACC" Padding="15 0 0 5"  Height="30" 
+                                    Text="{Binding SelectedProcess.Name}"/>
+                        <TextBlock  Background="#262626" Foreground="#827ACC" Padding="15 0 0 5"  Height="30" 
+                                    Text="{Binding SelectedApp.Name}"/>
+                            </StackPanel>
+
+                        <Grid Margin="10 10 10 7">
+                            <Button Content="Нет" HorizontalAlignment="Right" Width="100" Background="#408B0000" 
+                                    FontSize="12" Margin="0 0 115 0"
+                                          Command="{Binding CommandCloseWindow}" />
+
+                            <Button Content="Да" HorizontalAlignment="Right" Width="100" Height="25" Margin="0"
+                                    FontWeight="SemiBold" FontSize="12" Background="#8200CC" Foreground="White"
+                                          ToolTip="Это действие невозможно отменить" 
+                                          Command="{Binding CommandCloseProcess}"
+                                          >
+                              
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+
+
+        </Grid>
+    </Grid>
+</Window>
